@@ -10,34 +10,30 @@ struct ListNode{
 
 class Solution {
 public:
-    Solution():result(0){};
     ListNode* addTwoNumbers(ListNode*, ListNode*);
-private:
-    ListNode result;
 };
 
 ListNode* Solution::addTwoNumbers(ListNode *l1,ListNode *l2){
-    ListNode *next_node=l1;
-    ListNode *l2_next_node=l2;
+    ListNode result(0),*p=&result;
     int temp=0;
-    ListNode *result_next_node=&this->result;
-    while(next_node && l2_next_node){
-        int sum=next_node->val+l2_next_node->val;
+    while(l1 || l2 || temp){
+        int sum=((l1)?l1->val:0)+((l2)?l2->val:0);
+        int val = sum+temp;
         if(sum>=10){
-            result_next_node->val=sum%10;
+            val=(sum%10)+temp;
+            temp=1;
+        }else if(val>=10){
+            val=val%10;
             temp=1;
         }else{
-            result_next_node->val=sum+temp;
             temp=0;
         }
-        next_node=next_node->next;
-        l2_next_node=l2_next_node->next;
-        if(next_node && l2_next_node){
-            result_next_node->next= new ListNode(0);
-            result_next_node=result_next_node->next;
-        }
+        l1=(l1)?l1->next:NULL;
+        l2=(l2)?l2->next:NULL;
+        p->next= new ListNode(val);
+        p=p->next;
     }
-    return &this->result;
+    return result.next;
 }
 
 
